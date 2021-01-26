@@ -35,11 +35,78 @@
             let finalAmount = amount1 + amount2 + amount3;
 
 
-           document.getElementById("show").innerHTML=finalAmount;
+            document.getElementById("show").innerHTML = finalAmount;
+        }
 
+        function bCycleCheck() {
+
+            let bCycleStart;
+            let bCycleEnd;
+            let bCycleFlag = document.forms["myform2"]["bCycle"].value           
+            switch (bCycleFlag) {
+                //Οι μήνες είναι από 0 - 11
+                case "0":
+                    alert("Διαλέξτε ένα κύκλο τιμολόγησης");
+                    break;
+                case "1":
+                    bCycleStart = new Date(2021, 09, 08);
+                    bCycleEnd = new Date(2021, 11, 07);
+                    break;
+                case "2":
+                    bCycleStart = new Date(2021, 09, 16);
+                    bCycleEnd = new Date(2021, 11, 15);
+                    break;
+                case "3":
+                    bCycleStart = new Date(2021, 09, 23);
+                    bCycleEnd = new Date(2021, 11, 22);
+            }
+
+            let startDate = new Date(document.forms["myform2"]["startDate2"].value); 
+            let rDateDay1 = 0;
+            let rDateMonth1 = 0;
+            let rDateYear1= 0;
+            // alert(startDate.getDate());
+            //Πρώτη περίοδος επιστροφής
+           
+
+        
+        //Δημιουργία του μήνα για τη πρώτη περίοδο επιστροφής
+           if ((startDate.getMonth() + 1) = 12){
+            if(startDate.getDate()>= bCycleStart.getDate()){
+                rDateMonth1=1;
+            }else{
+                rDateMonth1=startDate.getMonth();
+            }
+           }else{
+               if(startDate.getDate()< bCycleStart.getDate()){
+                   rDateMonth1=startDate.getMonth();
+               }else{
+                   rDateMonth1 = startDate.getMonth()+1;
+               }
+           }
 
         }
+
         
+
+ // function bCycleCheck() {
+
+        //     let bCycleFlag = document.forms["myform2"]["bCycle"].value
+
+        //     let bCycleStart;
+        //     let bCycleEnd;
+        //     if (bCycleFlag == 0) {
+        //         alert("Διαλεξε ένα κύκλο τιμολόγησης");
+        //     } else if (bCycleFlag == 1) {
+        //         bCycleStart = new Date(2021, 09, 08);
+        //         bCycleEnd = new Date(2021, 11, 07);
+        //     } else if (bCycleFlag == 2) {
+        //         bCycleStart = new Date(2021, 09, 16);
+        //         bCycleEnd = new Date(2021, 11, 15);
+        //     } else {
+        //         bCycleStart = new Date(2021, 09, 23);
+        //         bCycleEnd = new Date(2021, 11, 22);
+        //     }
 
     </Script>
 
@@ -58,7 +125,7 @@
 
         <main>
             <h3>1ος και 5ος κύκλος τιμολόγησης</h3>
-            <table>
+            <table border="1">
                 <form name="myform">
                     <tr>
                         <th>Ημερομηνία έναρξης</th>
@@ -68,7 +135,7 @@
                     <tr>
                         <td><input type="date" id="startDate" name="startDate"></td>
                         <td><input type="date" id="endDate" name="endDate"></td>
-                        <td> <input type="number" id="ammount" name="amount"></td>
+                        <td> <input type="number" id="amount" name="amount"></td>
                     </tr>
                     <tr>
                         <td colspan="3"><input type="button" value="Υπολογισμός" id="btn_calc" onclick=calculation()>
@@ -77,6 +144,57 @@
                     <tr>
                         <td> Ποσό Χρεωπιστωτικού:</td>
                         <td colspan="2" id="show"></td>
+
+                    </tr>
+
+                </form>
+
+            </table>
+            <br>
+            <br>
+            <h3>Όλοι οι άλλοι κύκλοι τιμολόγησης</h3>
+            <table border="1">
+                <form name="myform2">
+                    <tr>
+                        <th colspan="2">Κύκλος Τιμολόγησης</th>
+                        <th rowspan="3"> Ποσό</th>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <select name="bCycle">
+                                <option value="0">
+                                    Διαλέξτε κύκλο τιμολόγησης
+                                </option>
+                                <option value="1">
+                                    2ος & 6ος κύκλος 08/xx - 07/xx
+                                </option>
+                                <option value="2">
+                                    3ος & 7ος κύκλος 16/xx - 15/xx
+                                </option>
+                                <option value="3">
+                                    4ος & 8ος κύκλος 23/xx - 22/xx
+                                </option>
+                            </select>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <th>Ημερομηνία έναρξης</th>
+                        <th>Ημερομηνία λήξης</th>
+
+                    </tr>
+                    <tr>
+                        <td><input type="date" id="startDate2" name="startDate2"></td>
+                        <td><input type="date" id="endDate2" name="endDate2"></td>
+                        <td> <input type="number" id="ammount2" name="amount2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><input type="button" value="Υπολογισμός" id="btn_calc2" onclick=bCycleCheck()>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> Ποσό Χρεωπιστωτικού:</td>
+                        <td colspan="2" id="show2"></td>
 
                     </tr>
 

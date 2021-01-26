@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <Script>
+        function daysInMonth(month, year) {
+            return new Date(year, month, 0).getDate();
+        }
+
+        function calculation() {
+            let startDate = new Date(document.forms["myform"]["startDate"].value);
+            let endDate = new Date(document.forms["myform"]["endDate"].value);
+            let amount = document.forms["myform"]["amount"].value;
+
+
+            let numOfDaysStDate = daysInMonth((startDate.getMonth() + 1), startDate.getFullYear());
+            let numOfDaysEndDate = daysInMonth((endDate.getMonth() + 1), endDate.getFullYear());
+
+            let daysLeftInMonth = numOfDaysStDate - startDate.getDate() + 1;
+            let reccurDaysInMonth = endDate.getDate();
+
+            let fullMonths = (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() + 1) - (startDate.getMonth() + 1) - 1;
+
+            let amountPerDay1 = amount / numOfDaysStDate;
+            let amountPerDay2 = amount / numOfDaysEndDate;
+
+            let amount1 = amountPerDay1 * daysLeftInMonth;
+            let amount2 = amountPerDay2 * reccurDaysInMonth;
+            let amount3 = fullMonths * amount;
+
+            let finalAmount = amount1 + amount2 + amount3;
+
+
+           document.getElementById("show").innerHTML=finalAmount;
+
+
+        }
+        
+
+    </Script>
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header>
+            <img src="">
+
+        </header>
+        <nav>
+
+        </nav>
+
+        <main>
+            <h3>1ος και 5ος κύκλος τιμολόγησης</h3>
+            <table>
+                <form name="myform">
+                    <tr>
+                        <th>Ημερομηνία έναρξης</th>
+                        <th>Ημερομηνία λήξης</th>
+                        <th> Ποσό</th>
+                    </tr>
+                    <tr>
+                        <td><input type="date" id="startDate" name="startDate"></td>
+                        <td><input type="date" id="endDate" name="endDate"></td>
+                        <td> <input type="number" id="ammount" name="amount"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><input type="button" value="Υπολογισμός" id="btn_calc" onclick=calculation()>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> Ποσό Χρεωπιστωτικού:</td>
+                        <td colspan="2" id="show"></td>
+
+                    </tr>
+
+                </form>
+
+            </table>
+
+
+        </main>
+
+    </div>
+
+
+
+</body>
+
+</html>

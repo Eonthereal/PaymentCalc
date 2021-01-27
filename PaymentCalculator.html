@@ -60,31 +60,45 @@
                     bCycleStart = new Date(2021, 09, 23);
                     bCycleEnd = new Date(2021, 11, 22);
             }
-
+            // let test = bCycleStart;
+            // alert(test);
             let startDate = new Date(document.forms["myform2"]["startDate2"].value); 
-            let rDateDay1 = 0;
+            let rDateDay1 = bCycleEnd.getDate();
             let rDateMonth1 = 0;
             let rDateYear1= 0;
             // alert(startDate.getDate());
             //Πρώτη περίοδος επιστροφής
-           
-
+                  
+        // Δημιουργία του μήνα για τη πρώτη περίοδο επιστροφής
         
-        //Δημιουργία του μήνα για τη πρώτη περίοδο επιστροφής
-           if ((startDate.getMonth() + 1) = 12){
-            if(startDate.getDate()>= bCycleStart.getDate()){
+           if ((startDate.getMonth() + 1) == 12){
+            if(startDate.getDate() >= bCycleStart.getDate()){
                 rDateMonth1=1;
             }else{
                 rDateMonth1=startDate.getMonth();
             }
            }else{
                if(startDate.getDate()< bCycleStart.getDate()){
-                   rDateMonth1=startDate.getMonth();
+                   rDateMonth1 = startDate.getMonth();
                }else{
                    rDateMonth1 = startDate.getMonth()+1;
                }
            }
 
+        //Δημιουργία του χρόνου για τη πρώτη περίοδο επιστροφής
+
+        if ((startDate.getMonth() + 1) == 12){
+            if(startDate.getDate() >= bCycleStart.getDate()){
+                rDateYear1 = startDate.getFullYear()+1;
+            }else{
+                rDateYear1=startDate.getFullYear();
+            }
+        }else {
+           rDateYear1=startDate.getFullYear(); 
+        }
+
+        let rDate1= new Date(rDateYear1,rDateMonth1, rDateDay1);
+        alert(rDate1);
         }
 
         
@@ -133,7 +147,7 @@
                         <th> Ποσό</th>
                     </tr>
                     <tr>
-                        <td><input type="date" id="startDate" name="startDate"></td>
+                        <td><input type="date" id="startDate"  name="startDate"></td>
                         <td><input type="date" id="endDate" name="endDate"></td>
                         <td> <input type="number" id="amount" name="amount"></td>
                     </tr>

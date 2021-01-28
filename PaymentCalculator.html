@@ -7,19 +7,23 @@
     <title>Payment Calculator</title>
 
     <Script>
+
+        //Υπολογισμός πόσων ημερών έχει ο μήνας
         function daysInMonth(month, year) {
             return new Date(year, month, 0).getDate();
         }
 
         function calculation() {
+            //Παίρνω τα data από τη myform
             let startDate = new Date(document.forms["myform"]["startDate"].value);
             let endDate = new Date(document.forms["myform"]["endDate"].value);
             let amount = document.forms["myform"]["amount"].value;
 
-
+            //Υπολογισμός πόσες ημέρες έχουν οι μήνες της αρχής και του τέλους (30,31,για Φεβρουάριο (28 ή 29) )
             let numOfDaysStDate = daysInMonth((startDate.getMonth() + 1), startDate.getFullYear());
             let numOfDaysEndDate = daysInMonth((endDate.getMonth() + 1), endDate.getFullYear());
 
+            
             let daysLeftInMonth = numOfDaysStDate - startDate.getDate() + 1;
             let reccurDaysInMonth = endDate.getDate();
 
@@ -34,15 +38,32 @@
 
             let finalAmount = amount1 + amount2 + amount3;
 
-
             document.getElementById("show").innerHTML = finalAmount;
         }
 
-        function bCycleCheck() {
+        //Διαφορά δύο ημερομηνιών σε ημέρες
+        function diffInDays(d1, d2) {
+            const oneDay = 24 * 60 * 60 * 1000;
+            const diffDays = Math.round(Math.abs((d1 - d2) / oneDay)) + 1;
+            return diffDays;
+        }
+
+        //Διαφορα δύο ημερομηνιών σε ακέραιους μήνες
+        function monthDiff(d1, d2) {
+            var months;
+            months = (d2.getFullYear() - d1.getFullYear()) * 12;
+            months -= d1.getMonth();
+            months += d2.getMonth();
+            return months < 0 ? 0 : months;
+            // return months <= 0 ? 0 : months; //Πρέπει να checkaρω ποιο από τα δύο
+        }
+
+
+        function calculation2() {
 
             let bCycleStart;
             let bCycleEnd;
-            let bCycleFlag = document.forms["myform2"]["bCycle"].value           
+            let bCycleFlag = document.forms["myform2"]["bCycle"].value
             switch (bCycleFlag) {
                 //Οι μήνες είναι από 0 - 11
                 case "0":
@@ -60,68 +81,108 @@
                     bCycleStart = new Date(2021, 09, 23);
                     bCycleEnd = new Date(2021, 11, 22);
             }
-            // let test = bCycleStart;
-            // alert(test);
-            let startDate = new Date(document.forms["myform2"]["startDate2"].value); 
+
+            let startDate = new Date(document.forms["myform2"]["startDate2"].value);
             let rDateDay1 = bCycleEnd.getDate();
             let rDateMonth1 = 0;
-            let rDateYear1= 0;
-            // alert(startDate.getDate());
-            //Πρώτη περίοδος επιστροφής
-                  
-        // Δημιουργία του μήνα για τη πρώτη περίοδο επιστροφής
-        
-           if ((startDate.getMonth() + 1) == 12){
-            if(startDate.getDate() >= bCycleStart.getDate()){
-                rDateMonth1=1;
-            }else{
-                rDateMonth1=startDate.getMonth();
+            let rDateYear1 = 0;
+
+
+
+            // Δημιουργία του μήνα για τη πρώτη περίοδο επιστροφής
+
+            if ((startDate.getMonth() + 1) == 12) {
+                if (startDate.getDate() >= bCycleStart.getDate()) {
+                    rDateMonth1 = 0;
+                } else {
+                    rDateMonth1 = startDate.getMonth();
+                }
+            } else {
+                if (startDate.getDate() < bCycleStart.getDate()) {
+                    rDateMonth1 = startDate.getMonth();
+                } else {
+                    rDateMonth1 = startDate.getMonth() + 1;
+                }
             }
-           }else{
-               if(startDate.getDate()< bCycleStart.getDate()){
-                   rDateMonth1 = startDate.getMonth();
-               }else{
-                   rDateMonth1 = startDate.getMonth()+1;
-               }
-           }
 
-        //Δημιουργία του χρόνου για τη πρώτη περίοδο επιστροφής
+            //Δημιουργία του χρόνου για τη πρώτη περίοδο επιστροφής
 
-        if ((startDate.getMonth() + 1) == 12){
-            if(startDate.getDate() >= bCycleStart.getDate()){
-                rDateYear1 = startDate.getFullYear()+1;
-            }else{
-                rDateYear1=startDate.getFullYear();
+            if ((startDate.getMonth() + 1) == 12) {
+                if (startDate.getDate() >= bCycleStart.getDate()) {
+                    rDateYear1 = startDate.getFullYear() + 1;
+                } else {
+                    rDateYear1 = startDate.getFullYear();
+                }
+            } else {
+                rDateYear1 = startDate.getFullYear();
             }
-        }else {
-           rDateYear1=startDate.getFullYear(); 
+
+            let rDate1 = new Date(rDateYear1, rDateMonth1, rDateDay1);
+
+            //TESTS
+            document.getElementById("test1").innerHTML = startDate;
+            document.getElementById("test2").innerHTML = rDate1;
+            document.getElementById("testdiff1").innerHTML = diffInDays(rDate1, startDate); //υπολογισμός της διαφοράς τους σε μέρες (θα μου χρειαστεί)
+
+            let endDate = new Date(document.forms["myform2"]["endDate2"].value);
+            let rDateDay2 = bCycleStart.getDate();
+            let rDateMonth2 = 0;
+            let rDateYear2 = 0;
+
+            //Δημιουργία του μήνα για τη τελευταία περίοδο επιστροφής
+            if ((endDate.getMonth() - startDate.getMonth()) <= 0) {
+                if (endDate.getDate() > bCycleEnd.getDate()) {
+                    rDateMonth2 = endDate.getMonth();
+                } else {
+                    if ((endDate.getMonth() + 1) == 1) {
+                        rDateMonth2 = 11;
+                    } else {
+                        rDateMonth2 = endDate.getMonth() - 1;
+                    }
+                }
+            } else {
+                if (endDate.getDate() > bCycleEnd.getDate()) {
+                    rDateMonth2 = endDate.getMonth();
+                } else {
+                    rDateMonth2 = endDate.getMonth() - 1;
+                }
+            }
+
+            //Δημιουργία του χρόνου για τη τελευταία περίοδο επιστροφής
+            if (startDate.getFullYear() != endDate.getFullYear()) {
+                if (((endDate.getMonth() + 1) == 1) && (endDate.getDate() > bCycleEnd.getDate())) {
+
+                    rDateYear2 = endDate.getFullYear();
+                } else {
+
+                    if ((endDate.getMonth() + 1) > 1) {
+                        rDateYear2 = endDate.getFullYear();
+                    } else {
+                        if ((endDate.getFullYear() - startDate.getFullYear()) > 1) {
+                            if ((rDateMonth2 + 1) == 12 && (endDate.getMonth() + 1) == 1) {
+                                rDateYear2 = endDate.getFullYear() - 1
+                            } else {
+                                rDateYear2 = endDate.getFullYear()
+                            }
+                        } else {
+                            rDateYear2 = startDate.getFullYear();
+                        }
+                    }
+                }
+            } else {
+                rDateYear2 = startDate.getFullYear();
+            }
+
+            let rDate2 = new Date(rDateYear2, rDateMonth2, rDateDay2);
+
+            //TESTS
+            document.getElementById("test3").innerHTML = rDate2;
+            document.getElementById("test4").innerHTML = endDate;
+            document.getElementById("testdiff2").innerHTML = diffInDays(endDate, rDate2); //υπολογισμός της διαφοράς τους σε μέρες (θα μου χρειαστεί)
+
+
+
         }
-
-        let rDate1= new Date(rDateYear1,rDateMonth1, rDateDay1);
-        alert(rDate1);
-        }
-
-        
-
- // function bCycleCheck() {
-
-        //     let bCycleFlag = document.forms["myform2"]["bCycle"].value
-
-        //     let bCycleStart;
-        //     let bCycleEnd;
-        //     if (bCycleFlag == 0) {
-        //         alert("Διαλεξε ένα κύκλο τιμολόγησης");
-        //     } else if (bCycleFlag == 1) {
-        //         bCycleStart = new Date(2021, 09, 08);
-        //         bCycleEnd = new Date(2021, 11, 07);
-        //     } else if (bCycleFlag == 2) {
-        //         bCycleStart = new Date(2021, 09, 16);
-        //         bCycleEnd = new Date(2021, 11, 15);
-        //     } else {
-        //         bCycleStart = new Date(2021, 09, 23);
-        //         bCycleEnd = new Date(2021, 11, 22);
-        //     }
-
     </Script>
 
 
@@ -147,7 +208,7 @@
                         <th> Ποσό</th>
                     </tr>
                     <tr>
-                        <td><input type="date" id="startDate"  name="startDate"></td>
+                        <td><input type="date" id="startDate" name="startDate"></td>
                         <td><input type="date" id="endDate" name="endDate"></td>
                         <td> <input type="number" id="amount" name="amount"></td>
                     </tr>
@@ -203,7 +264,7 @@
                         <td> <input type="number" id="ammount2" name="amount2"></td>
                     </tr>
                     <tr>
-                        <td colspan="3"><input type="button" value="Υπολογισμός" id="btn_calc2" onclick=bCycleCheck()>
+                        <td colspan="3"><input type="button" value="Υπολογισμός" id="btn_calc2" onclick=calculation2()>
                         </td>
                     </tr>
                     <tr>
@@ -215,6 +276,38 @@
                 </form>
 
             </table>
+            <br>
+            <div>
+                ΠΡΩΤΗ ΠΕΡΙΟΔΟΣ ΕΠΙΣΤΡ1
+                <p id="test1"></p>
+                <p id="test2"></p>
+                <p id="testdiff1"></p>
+
+            </div>
+            <div>
+                ΤΕΛΕΥΤΑΙΑ ΠΕΡΙΟΔΟΣ ΕΠΙΣΤΡ2
+                <p id="test3"></p>
+                <p id="test4"></p>
+                <p id="testdiff2"></p>
+            </div>
+            <div>
+                ΠΡΩΤΗ ΠΕΡΙΟΔΟΣ ΤΙΜΟΛ1
+                <p id="test5"></p>
+                <p id="test6"></p>
+                <p id="testdiff3"></p>
+            </div>
+            <div>
+                ΤΕΛΕΥΤΑΙΑ ΠΕΡΙΟΔΟΣ ΤΙΜΟΛ2
+                <p id="test7"></p>
+                <p id="test8"></p>
+                <p id="testdiff4"></p>
+            </div>
+            <div>
+                ΑΚΕΡΑΙΟΙ ΜΗΝΕΣ 1
+                <p id="test9"></p>
+                <p id="test10"></p>
+                <p id="testdiff5"></p>
+            </div>
 
 
         </main>

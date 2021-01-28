@@ -23,19 +23,23 @@
             let numOfDaysStDate = daysInMonth((startDate.getMonth() + 1), startDate.getFullYear());
             let numOfDaysEndDate = daysInMonth((endDate.getMonth() + 1), endDate.getFullYear());
 
-            
+            //Υπολογισμός πόσες μέρες απομένουν στον 1ο μήνα και πόσες μέρες έχουν περάσει στο τελευταίο μήνα 
             let daysLeftInMonth = numOfDaysStDate - startDate.getDate() + 1;
             let reccurDaysInMonth = endDate.getDate();
 
+            //Υπολογισμός των ενδιάμεσων "ολόκληρων" μηνών
             let fullMonths = (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() + 1) - (startDate.getMonth() + 1) - 1;
 
+            //Υπολογισμός των ποσών ανα μέρα στο μήνα της αρχικής ημερομηνίας και στο μήνα της τελικής ημερομηνίας
             let amountPerDay1 = amount / numOfDaysStDate;
             let amountPerDay2 = amount / numOfDaysEndDate;
 
+            //Υπολογισμός των συνολικών ποσών για το μήνα της αρχικής ημερομηνίας, το μήνα της τελικής ημερομηνίας και των "ολόκληρων" μηνών
             let amount1 = amountPerDay1 * daysLeftInMonth;
             let amount2 = amountPerDay2 * reccurDaysInMonth;
             let amount3 = fullMonths * amount;
 
+            //Υπολογισμός του συνόλου 
             let finalAmount = amount1 + amount2 + amount3;
 
             document.getElementById("show").innerHTML = finalAmount;
@@ -55,7 +59,7 @@
             months -= d1.getMonth();
             months += d2.getMonth();
             return months < 0 ? 0 : months;
-            // return months <= 0 ? 0 : months; //Πρέπει να checkaρω ποιο από τα δύο
+            // return months <= 0 ? 0 : months; // **TODO** Πρέπει να checkaρω ποιο από τα δύο
         }
 
 

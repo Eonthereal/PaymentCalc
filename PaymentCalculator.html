@@ -185,6 +185,54 @@
             document.getElementById("testdiff2").innerHTML = diffInDays(endDate, rDate2); //υπολογισμός της διαφοράς τους σε μέρες (θα μου χρειαστεί)
 
 
+            // MonthA 1i periodos timologisis
+
+            if (dayb5 >= dayb4) {
+                if (monthb5 == 1) {
+                    m = 1;
+                } else {
+                    m = monthb5
+                }
+            } else {
+                if (monthb5 == 1) {
+                    m = 12;
+                } else {
+                    m = monthb5 - 1;
+                }
+            }
+
+            // YearA 1i periodos timologisi
+
+            if (dayb5 < dayb4) {
+                if (monthb5 == 1) {
+                    y = yearb5 - 1
+                } else {
+                    y = yearb5
+                }
+            } else {
+                y = yearb5
+            }
+
+            // MonthB 1i periodos timologisis
+            
+            if (dayb5 >= dayb4) {
+                if (monthb5 == 12) {
+                    m = 1
+                } else {
+                    m = monthb5 + 1
+                }
+            } else {
+                m = monthb5
+            }
+
+            // YearB 1i periodos timologisi
+
+            if (dayb5 >= dayb4 && monthb5 == 12) {
+                y = yearb5 + 1
+            } else {
+                y = yearb5
+            }
+
 
         }
     </Script>

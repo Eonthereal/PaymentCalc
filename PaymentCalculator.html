@@ -48,7 +48,8 @@
         //Διαφορά δύο ημερομηνιών σε ημέρες
         function diffInDays(d1, d2) {
             const oneDay = 24 * 60 * 60 * 1000;
-            const diffDays = Math.round(Math.abs((d1 - d2) / oneDay)) + 1;
+            // const diffDays = Math.round(Math.abs((d1 - d2) / oneDay)) + 1; //αυτό γυρνάει τον απόλυτο αριθμό λόγω του Math.abs
+            const diffDays = Math.round((d1 - d2) / oneDay) + 1;
             return diffDays;
         }
 
@@ -183,56 +184,163 @@
             document.getElementById("test3").innerHTML = rDate2;
             document.getElementById("test4").innerHTML = endDate;
             document.getElementById("testdiff2").innerHTML = diffInDays(endDate, rDate2); //υπολογισμός της διαφοράς τους σε μέρες (θα μου χρειαστεί)
+            // document.getElementById("testdiff2").innerHTML = diffInDays(rDate2, endDate); //υπολογισμός της διαφοράς τους σε μέρες (θα μου χρειαστεί)
 
 
-            // MonthA 1i periodos timologisis
 
-            if (dayb5 >= dayb4) {
-                if (monthb5 == 1) {
-                    m = 1;
+
+            let bDateDay1 = bCycleStart.getDate();
+            let bDateMonth1 = 0;
+            let bDateYear1 = 0;
+
+            //Δημιουργία του μήνα για τη πρώτη περίοδο τιμολόγησης (Αρχική ημ/νια)
+            //dayb5 = startDate.getDate() , dateb4 = bCycleStart.getDate() , monthb5 = startDate.getMonth()
+
+            if (startDate.getDate() >= bCycleStart.getDate()) {
+                if ((startDate.getMonth() + 1) == 1) {
+                    bDateMonth1 = 0;
                 } else {
-                    m = monthb5
+                    bDateMonth1 = monthb5 = startDate.getMonth();
                 }
             } else {
-                if (monthb5 == 1) {
-                    m = 12;
+                if ((startDate.getMonth() + 1) == 1) {
+                    bDateMonth1 = 11;  //Δεκέμβριος
                 } else {
-                    m = monthb5 - 1;
+                    bDateMonth1 = startDate.getMonth() - 1;
                 }
             }
 
-            // YearA 1i periodos timologisi
+            //Δημιουργία του χρόνου για τη πρώτη περίοδο τιμολόγησης (Αρχική ημ/νια)
+            //dayb5 = startDate.getDate() , dateb4 = bCycleStart.getDate() , monthb5 = startDate.getMonth() , yearb5 = startDate.getFullYear()
 
-            if (dayb5 < dayb4) {
-                if (monthb5 == 1) {
-                    y = yearb5 - 1
+            if (startDate.getDate() < bCycleStart.getDate()) {
+                if ((startDate.getMonth() + 1) == 1) {
+                    bDateYear1 = startDate.getFullYear() - 1;
                 } else {
-                    y = yearb5
+                    bDateYear1 = startDate.getFullYear();
                 }
             } else {
-                y = yearb5
+                bDateYear1 = startDate.getFullYear();
             }
 
-            // MonthB 1i periodos timologisis
+            let bDate1 = new Date(bDateYear1, bDateMonth1, bDateDay1);
+
+
+            let bDateDay2 = bCycleEnd.getDate();
+            let bDateMonth2 = 0;
+            let bDateYear2 = 0;
+
+            //Δημιουργία του μήνα για τη πρώτη περίοδο τιμολόγησης (Τελική ημ/νια)
+
+            if (startDate.getDate() >= bCycleStart.getDate()) {
+                if ((startDate.getMonth() + 1) == 12) {
+                    bDateMonth2 = 0
+                } else {
+                    bDateMonth2 = startDate.getMonth() + 1
+                }
+            } else {
+                bDateMonth2 = startDate.getMonth()
+            }
+
+            //Δημιουργία του χρόνου για τη πρώτη περίοδο τιμολόγησης (Τελική ημ/νια)
+
+            if (startDate.getDate() >= bCycleStart.getDate() && (startDate.getMonth() + 1) == 12) {
+                bDateYear2 = startDate.getFullYear() + 1
+            } else {
+                bDateYear2 = startDate.getFullYear()
+            }
+
+            let bDate2 = new Date(bDateYear2, bDateMonth2, bDateDay2);
+
+            document.getElementById("test5").innerHTML = bDate1;
+            document.getElementById("test6").innerHTML = bDate2;
+            document.getElementById("testdiff3").innerHTML = diffInDays(bDate2, bDate1);
+
+            let bDateDay4 = bCycleEnd.getDate();
+            let bDateMonth4 = 0;
+            let bDateYear4 = 0;
+
+            //Δημιουργία του μήνα για τη τελευταία περίοδο τιμολόγησης (Τελική ημ/νια)
+
+            if (endDate.getDate() > bCycleEnd.getDate()) {
+                if ((endDate.getMonth() + 1) == 12) {
+                    bDateMonth4 = 0;
+                } else {
+                    bDateMonth4 = endDate.getMonth() + 1
+                }
+
+            } else {
+                bDateMonth4 = endDate.getMonth();
+            }
+
+            //Δημιουργία του χρόνου για τη τελευταία περίοδο τιμολόγησης (Τελική ημ/νια)
+
+            if (endDate.getDate() > bCycleEnd.getDate() && (endDate.getMonth() + 1) == 12) {
+                bDateYear4 = endDate.getFullYear() + 1;
+            } else {
+                bDateYear4 = endDate.getFullYear();
+            }
+
+            let bDate4 = new Date(bDateYear4, bDateMonth4, bDateDay4);
+
+            let bDateDay3 = bCycleStart.getDate();
+            let bDateMonth3 = 0;
+            let bDateYear3 = 0;
+
+            //******H Αρχρικη ημερομηνία πρέπει να υλοποιηθεί μετά τη τελική**********
+
+            //Δημιουργία του μήνα για τη τελευταία περίοδο τιμολόγησης (Αρχική ημ/νια) 
+
+            if ((bDate4.getMonth() + 1) == 1) {
+                bDateMonth3 = 11;
+            } else {
+                bDateMonth3 = bDate4.getMonth() - 1;
+            }
+
+            //Δημιουργία του χρόνου για τη τελευταία περίοδο τιμολόγησης (Αρχική ημ/νια)
+
             
-            if (dayb5 >= dayb4) {
-                if (monthb5 == 12) {
-                    m = 1
+            if (yearb5 != yearc5) {
+                if (monthc5 == 1 && dayc5 > dayc4) {
+                    bDateYear3 = yearc5;
                 } else {
-                    m = monthb5 + 1
+                    if (monthc5 > 1) {
+                        bDateYear3 = yearc5;
+                    } else {
+                        if ((yearc5 - yearb5) > 1) {
+                            if (t18 == 12 && x18 == 1) {
+                                bDateYear3 = yearc5 - 1;
+                            } else {
+                                bDateYear3 = yearc5;
+                            }
+                        } else {
+                            bDateYear3 = yearb5;
+                        }
+                    }
                 }
             } else {
-                m = monthb5
+                bDateYear3 = yearb5;
             }
 
-            // YearB 1i periodos timologisi
 
-            if (dayb5 >= dayb4 && monthb5 == 12) {
-                y = yearb5 + 1
-            } else {
-                y = yearb5
-            }
 
+            let bDate3 = new Date(bDateYear3, bDateMonth3, bDateDay3);
+
+
+            document.getElementById("test7").innerHTML = bDate3;
+            document.getElementById("test8").innerHTML = bDate4;
+            document.getElementById("testdiff4").innerHTML = diffInDays(bDate4, bDate3);
+
+
+
+
+
+
+
+
+            document.getElementById("test9").innerHTML = fDate1;
+            document.getElementById("test10").innerHTML = fDate2;
+            document.getElementById("testdiff5").innerHTML = diffInDays(fDate2, fDate1);
 
         }
     </Script>

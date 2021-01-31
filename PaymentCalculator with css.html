@@ -5,6 +5,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Calculator</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#startDate").datepicker({
+                dateFormat: "dd/mm/yy",
+                changeMonth: true,
+                changeYear: true,
+                showOn: "button",
+                buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif",
+                buttonImageOnly: true,
+                showAnim: "fold"
+               
+            });
+            $('.ui-datepicker-trigger').css({ });
+        })
+
+        $(document).ready(function () {
+            $("#endDate").datepicker({
+                dateFormat: "dd/mm/yy",
+                changeMonth: true,
+                changeYear: true,
+                showOn: "button",
+                buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif",
+                buttonImageOnly: true
+
+            });
+        })
+
+        $(document).ready(function () {
+            $("#startDate2").datepicker({
+                dateFormat: "dd/mm/yy",
+                changeMonth: true,
+                changeYear: true,
+                showOn: "button",
+                buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif",
+                buttonImageOnly: true
+
+            });
+        })
+
+        $(document).ready(function () {
+            $("#endDate2").datepicker({
+                dateFormat: "dd/mm/yy",
+                changeMonth: true,
+                changeYear: true,
+                showOn: "button",
+                buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif",
+                buttonImageOnly: true
+
+            });
+        })
+
+
+    </script>
 
     <Script>
 
@@ -15,9 +72,16 @@
 
         function calculation() {
             //Παίρνω τα data από τη myform
-            let startDate = new Date(document.forms["myform"]["startDate"].value);
-            startDate.setHours(0, 0, 0, 0); // Μηδενισμός της default ώρας γιατί δημιουργεί πρόβλημα όταν συγκρίνω ημερομηνίες
-            let endDate = new Date(document.forms["myform"]["endDate"].value);
+            let startDateString = document.forms["myform"]["startDate"].value;
+            let startDateParts = startDateString.split("/");
+            let startDate = new Date(+startDateParts[2], startDateParts[1] - 1, +startDateParts[0]);
+            // let startDate = new Date(document.forms["myform"]["startDate"].value); // Το έβγαλα εκτώ διότι πλέον αλλάζω τη μορφή του date με jquery, οπότε μετά πρεπει να το μετατρέψω ξανα
+            startDate.setHours(0, 0, 0, 0); // Μηδενισμός της default ώρας γιατί δημιουργεί πρόβλημα όταν συγκρίνω ημερομηνίες (Μετά από αλλαγές στο κώδικα, είναι ήδη 0 αλλά το άφησα on, just in case)
+            let endDateString = document.forms["myform"]["endDate"].value;
+            let endDateParts = endDateString.split("/");
+            let endDate = new Date(+endDateParts[2], endDateParts[1] - 1, +endDateParts[0]);
+
+            // let endDate = new Date(document.forms["myform"]["endDate"].value); // Το έβγαλα εκτώ διότι πλέον αλλάζω τη μορφή του date με jquery, οπότε μετά πρεπει να το μετατρέψω ξανα
             endDate.setHours(0, 0, 0, 0);
             let amount = document.forms["myform"]["amount"].value;
 
@@ -88,8 +152,10 @@
                     bCycleStart = new Date(2021, 09, 23);
                     bCycleEnd = new Date(2021, 11, 22);
             }
-
-            let startDate = new Date(document.forms["myform2"]["startDate2"].value);
+            let startDateString = document.forms["myform2"]["startDate2"].value;
+            let startDateParts = startDateString.split("/");
+            let startDate = new Date(+startDateParts[2], startDateParts[1] - 1, +startDateParts[0]);
+            // let startDate = new Date(document.forms["myform2"]["startDate2"].value);
             startDate.setHours(0, 0, 0, 0);
             let rDateDay1 = bCycleEnd.getDate();
             let rDateMonth1 = 0;
@@ -130,7 +196,10 @@
             // document.getElementById("test2").innerHTML = rDate1;
             // document.getElementById("testdiff1").innerHTML = diffInDays(rDate1, startDate); //υπολογισμός της διαφοράς τους σε μέρες (θα μου χρειαστεί)
 
-            let endDate = new Date(document.forms["myform2"]["endDate2"].value);
+            let endDateString = document.forms["myform2"]["endDate2"].value;
+            let endDateParts = endDateString.split("/");
+            let endDate = new Date(+endDateParts[2], endDateParts[1] - 1, +endDateParts[0]);
+            // let endDate = new Date(document.forms["myform2"]["endDate2"].value);
             endDate.setHours(0, 0, 0, 0);
             let rDateDay2 = bCycleStart.getDate();
             let rDateMonth2 = 0;
@@ -378,7 +447,8 @@
         }
     </Script>
 
-    <style>
+
+    <Style>
         * {
             margin: 0;
             padding: 0;
@@ -397,7 +467,7 @@
 
         body {
             background-color: lightgray;
-            background: url(https://yard.gr/system/media/1818/original_5.jpg);
+            background: url(https://raw.githubusercontent.com/Eonthereal/PaymentCalc/main/original_5.jpg);
         }
 
         nav {
@@ -431,10 +501,11 @@
             width: 60%;
             margin: 10px auto;
             height: 300px;
-            
+
         }
 
-        table td,th {
+        table td,
+        th {
             padding: 5px;
             /* Το height to έβαλα γιατί το input, select{} από κάτω το height 100% δε δούλευε στο Mozzila και δεν επιανε όλο το ύψος. Στο Chrome δουλευε και χωρίς */
             height: 100px;
@@ -448,27 +519,74 @@
             height: 100%;
             font-size: larger;
             text-align: center;
+            position: relative;
         }
-        h3{
+
+        #bCycle{
+            font-weight: bold;
+        
+                }
+
+        h3 {
             margin: 10px auto;
             text-align: center;
         }
 
-        #show , #show2{
+        #show,
+        #show2 {
             text-align: center;
             color: red;
             font-size: xx-large;
+           
         }
 
-    </style>
+        .ui-datepicker-trigger{
+            float: right;
+            position:absolute;
+            cursor: pointer ;
+            
+            }
 
+            .ui-datepicker {
+            font-size: 9pt !important; 
+            width: 500px;
+           
+            }
 
+            #btn_calc:hover{
+            background-color:#4f9f45;
+            color: white;
+            position: relative;
+            top: -2px;
+            }
+
+            #btn_calc:active{
+            position: relative;
+            top: 2px;
+            }
+
+            #btn_calc2:hover{
+            background-color:#4f9f45;
+            color: white;
+            position: relative;
+            top: -1px;
+            }
+
+            #btn_calc2:active{
+            position: relative;
+            top: 1px;
+            }
+
+    </Style>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script> -->
+    <!-- <input type="date" data-date="" data-date-format="DD/MM/YYYY" value="2015-08-09"> -->
 </head>
 
 <body>
     <div id="container">
         <header>
-            <img src="https://www.cosmote.gr/ote_static/redesign/images/logo/Logo.png">
+            <img src="https://raw.githubusercontent.com/Eonthereal/PaymentCalc/main/Logo.png">
 
         </header>
         <nav>
@@ -486,8 +604,8 @@
                         <th> Ποσό</th>
                     </tr>
                     <tr>
-                        <td><input type="date" id="startDate" name="startDate"></td>
-                        <td><input type="date" id="endDate" name="endDate"></td>
+                        <td><input type="text" id="startDate" name="startDate"></td>
+                        <td><input type="text" id="endDate" name="endDate"></td>
                         <td> <input type="number" id="amount" name="amount"></td>
                     </tr>
                     <tr>
@@ -514,7 +632,7 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <select name="bCycle">
+                            <select name="bCycle" id="bCycle">
                                 <option value="0">
                                     Διαλέξτε κύκλο τιμολόγησης
                                 </option>
@@ -537,8 +655,8 @@
 
                     </tr>
                     <tr>
-                        <td><input type="date" id="startDate2" name="startDate2"></td>
-                        <td><input type="date" id="endDate2" name="endDate2"></td>
+                        <td><input type="text" id="startDate2" name="startDate2"></td>
+                        <td><input type="text" id="endDate2" name="endDate2"></td>
                         <td> <input type="number" id="ammount2" name="amount2"></td>
                     </tr>
                     <tr>

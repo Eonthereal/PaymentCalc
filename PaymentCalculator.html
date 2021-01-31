@@ -16,7 +16,9 @@
         function calculation() {
             //Παίρνω τα data από τη myform
             let startDate = new Date(document.forms["myform"]["startDate"].value);
+            startDate.setHours(0, 0, 0, 0); // Μηδενισμός της default ώρας γιατί δημιουργεί πρόβλημα όταν συγκρίνω ημερομηνίες
             let endDate = new Date(document.forms["myform"]["endDate"].value);
+            endDate.setHours(0, 0, 0, 0);
             let amount = document.forms["myform"]["amount"].value;
 
             //Υπολογισμός πόσες ημέρες έχουν οι μήνες της αρχής και του τέλους (30,31,για Φεβρουάριο (28 ή 29) )
@@ -42,7 +44,7 @@
             //Υπολογισμός του συνόλου 
             let finalAmount = amount1 + amount2 + amount3;
 
-            document.getElementById("show").innerHTML = finalAmount;
+            document.getElementById("show").innerHTML = finalAmount.toFixed(3);
         }
 
         //Διαφορά δύο ημερομηνιών σε ημέρες
@@ -88,11 +90,10 @@
             }
 
             let startDate = new Date(document.forms["myform2"]["startDate2"].value);
+            startDate.setHours(0, 0, 0, 0);
             let rDateDay1 = bCycleEnd.getDate();
             let rDateMonth1 = 0;
             let rDateYear1 = 0;
-
-
 
             // Δημιουργία του μήνα για τη πρώτη περίοδο επιστροφής
 
@@ -130,6 +131,7 @@
             document.getElementById("testdiff1").innerHTML = diffInDays(rDate1, startDate); //υπολογισμός της διαφοράς τους σε μέρες (θα μου χρειαστεί)
 
             let endDate = new Date(document.forms["myform2"]["endDate2"].value);
+            endDate.setHours(0, 0, 0, 0);
             let rDateDay2 = bCycleStart.getDate();
             let rDateMonth2 = 0;
             let rDateYear2 = 0;
@@ -298,49 +300,79 @@
             }
 
             //Δημιουργία του χρόνου για τη τελευταία περίοδο τιμολόγησης (Αρχική ημ/νια)
+            // yearb5 = startDate.getFullYear(), yearc5 = endDate.getFullYear(), monthc5 = endDate.getMonth(), dayc5= endDate.getDate(),dayc4=bCycleEnd.getDate() 
 
-            
-            if (yearb5 != yearc5) {
-                if (monthc5 == 1 && dayc5 > dayc4) {
-                    bDateYear3 = yearc5;
+            if (startDate.getFullYear() != endDate.getFullYear()) {
+                if (((endDate.getMonth() + 1) == 1) && (endDate.getDate() > bCycleEnd.getDate())) {
+                    bDateYear3 = endDate.getFullYear();
                 } else {
-                    if (monthc5 > 1) {
-                        bDateYear3 = yearc5;
+                    if ((endDate.getMonth() + 1) > 1) {
+                        bDateYear3 = endDate.getFullYear();
                     } else {
-                        if ((yearc5 - yearb5) > 1) {
-                            if (t18 == 12 && x18 == 1) {
-                                bDateYear3 = yearc5 - 1;
+                        if ((endDate.getFullYear() - startDate.getFullYear()) > 1) {
+                            if ((bDateMonth3 + 1) == 12 && (bDate4.getMonth() + 1) == 1) {
+                                bDateYear3 = endDate.getFullYear() - 1;
                             } else {
-                                bDateYear3 = yearc5;
+                                bDateYear3 = endDate.getFullYear();
                             }
                         } else {
-                            bDateYear3 = yearb5;
+                            bDateYear3 = startDate.getFullYear();
                         }
                     }
                 }
             } else {
-                bDateYear3 = yearb5;
+                bDateYear3 = startDate.getFullYear();
             }
-
-
 
             let bDate3 = new Date(bDateYear3, bDateMonth3, bDateDay3);
 
-
+            //TESTS
             document.getElementById("test7").innerHTML = bDate3;
             document.getElementById("test8").innerHTML = bDate4;
             document.getElementById("testdiff4").innerHTML = diffInDays(bDate4, bDate3);
 
+            //Δημιουργία και Υπολογισμός ακαίρεων μηνών
+
+            let fDateDay1 = bCycleStart.getDate();
+            let fDateMonth1 = rDate1.getMonth();
+            let fDateYear1 = rDate1.getFullYear();
+
+            let fDate1 = new Date(fDateYear1, fDateMonth1, fDateDay1);
+
+            let fDateDay2 = bCycleEnd.getDate();
+            let fDateMonth2 = rDate2.getMonth();
+            let fDateYear2 = rDate2.getFullYear();
+
+            let fDate2 = new Date(fDateYear2, fDateMonth2, fDateDay2);
 
 
 
-
-
-
-
+            //TESTS
             document.getElementById("test9").innerHTML = fDate1;
             document.getElementById("test10").innerHTML = fDate2;
-            document.getElementById("testdiff5").innerHTML = diffInDays(fDate2, fDate1);
+            document.getElementById("testdiff5").innerHTML = monthDiff(fDate1, fDate2);
+
+            //*********Υπολογισμός του ποσού*****************************
+
+            let amount = document.forms["myform2"]["amount2"].value;
+
+            let startDateAmount = diffInDays(rDate1, startDate) * amount / diffInDays(bDate2, bDate1);
+
+            let endDateAmount = diffInDays(endDate, rDate2) * amount / diffInDays(bDate4, bDate3);
+
+            let fullMonths = monthDiff(fDate1, fDate2) * amount;
+
+            let finalAmount = 0;
+
+            if (bDate2 >= endDate) {
+                finalAmount = (diffInDays(endDate, startDate)) * amount / diffInDays(bDate2, bDate1);  //excel IF(I19>=C5;(C5-B5+1)*F3/I29;SUM(B11:D11)) (Στο true statement είχε της αφαίρεση του endDate me to startDate + 1, εδώ μαλλον δε χρειάζεται)
+            } else {
+                finalAmount = startDateAmount + endDateAmount + fullMonths;
+            }
+
+            document.getElementById("show2").innerHTML = finalAmount.toFixed(3);
+            // document.getElementById("show2").innerHTML = finalAmount;
+
 
         }
     </Script>
